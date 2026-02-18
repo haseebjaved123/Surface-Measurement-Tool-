@@ -96,12 +96,9 @@ The tool automatically detects dimensions from images and calculates surface are
 
 ### Manual Calculator (No Installation)
 
-**→ [Open Manual Calculator (GitHub Pages)](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)**  
-**→ [Open Calculator Directly (works now)](https://htmlpreview.github.io/?https://github.com/haseebjaved123/Surface-Measurement-Tool-/blob/main/docs/index.html)**
+**→ [Open Calculator Directly](https://htmlpreview.github.io/?https://github.com/haseebjaved123/Surface-Measurement-Tool-/blob/main/docs/index.html)**
 
 Enter dimensions and get detailed surface area and volume calculations. Runs in your browser, no server needed.
-
-> **Note:** The first link requires GitHub Pages to be enabled (see [ENABLE_PAGES.md](ENABLE_PAGES.md)). The second link works immediately using GitHub's HTML preview.
 
 **Calculator Features:**
 - 📐 **7 Shape Types:** Cylinder, Rectangular, Frustum, Bucket, Scoop, Cone, Sphere
@@ -231,8 +228,7 @@ Edit `config.py` to customize:
 
 ## 🔗 Links
 
-- **Manual Calculator (direct link - works now):** [Open Calculator](https://htmlpreview.github.io/?https://github.com/haseebjaved123/Surface-Measurement-Tool-/blob/main/docs/index.html)
-- **Manual Calculator (GitHub Pages - requires Pages enabled):** [https://haseebjaved123.github.io/Surface-Measurement-Tool-/](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)
+- **Manual Calculator:** [Open Calculator Directly](https://htmlpreview.github.io/?https://github.com/haseebjaved123/Surface-Measurement-Tool-/blob/main/docs/index.html)
 - **Repository:** [https://github.com/haseebjaved123/Surface-Measurement-Tool-](https://github.com/haseebjaved123/Surface-Measurement-Tool-)
 
 ---
