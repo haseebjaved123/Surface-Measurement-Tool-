@@ -30,7 +30,7 @@ if errorlevel 1 (
 )
 
 echo Starting server in new window...
-start "Surface Measurement - Server" cmd /k ""%PYTHON_CMD%" server.py"
+start "Surface Measurement - Server" cmd /k "chcp 65001 >nul && set PYTHONIOENCODING=utf-8 && ""%PYTHON_CMD%" server.py"
 
 echo Waiting for server to start (first run can take ~20 sec)...
 timeout /t 15 /nobreak >nul
