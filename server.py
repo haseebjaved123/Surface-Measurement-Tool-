@@ -4,8 +4,17 @@ Local web server for uploading an image and getting measurements.
 from __future__ import annotations
 
 import argparse
+import os
+import sys
 import uuid
 from pathlib import Path
+
+# Fix Windows encoding issues
+if sys.platform == 'win32':
+    import codecs
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+    os.environ['PYTHONIOENCODING'] = 'utf-8'
 
 from flask import Flask, abort, render_template_string, request, send_from_directory, url_for
 from werkzeug.utils import secure_filename
@@ -56,9 +65,18 @@ def _dataset_images() -> list[str]:
     if not DATASET_DIR.exists():
         return []
     files = []
-    for p in DATASET_DIR.iterdir():
-        if p.is_file() and p.suffix.lower() in ALLOWED_EXTENSIONS:
-            files.append(p.name)
+    try:
+        for p in DATASET_DIR.iterdir():
+            if p.is_file() and p.suffix.lower() in ALLOWED_EXTENSIONS:
+                # Handle non-ASCII filenames safely
+                try:
+                    files.append(str(p.name))
+                except UnicodeEncodeError:
+                    # Fallback: use encoded filename
+                    files.append(p.name.encode('utf-8', errors='replace').decode('utf-8', errors='replace'))
+    except Exception as e:
+        # If there's any encoding issue, return empty list
+        print(f"Warning: Could not list dataset images: {e}", file=sys.stderr)
     return sorted(files)
 
 
@@ -183,7 +201,11 @@ def index():
             else:
                 results_cache[uploaded_name] = result
         except Exception as exc:
-            error = str(exc)
+            # Safely encode error message for Windows console
+            try:
+                error = str(exc)
+            except UnicodeEncodeError:
+                error = str(exc).encode('utf-8', errors='replace').decode('utf-8', errors='replace')
 
     return render_template_string(
         """
@@ -335,7 +357,11 @@ def manual_calculator():
         try:
             calculation = _manual_calculation(request.form)
         except Exception as exc:
-            error = str(exc)
+            # Safely encode error message for Windows console
+            try:
+                error = str(exc)
+            except UnicodeEncodeError:
+                error = str(exc).encode('utf-8', errors='replace').decode('utf-8', errors='replace')
 
     return render_template_string(
         """

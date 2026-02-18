@@ -2,6 +2,15 @@
 Main pipeline for OCR-based dimension detection and surface area calculation
 """
 import os
+import sys
+
+# Fix Windows encoding issues
+if sys.platform == 'win32':
+    import codecs
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+    os.environ['PYTHONIOENCODING'] = 'utf-8'
+
 # Avoid PaddleOCR/PaddlePaddle runtime issues with PIR/oneDNN on CPU.
 os.environ.setdefault("FLAGS_use_mkldnn", "0")
 os.environ.setdefault("FLAGS_enable_pir_api", "0")

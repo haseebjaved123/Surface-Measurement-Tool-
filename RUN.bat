@@ -1,6 +1,8 @@
 @echo off
+chcp 65001 >nul
 title Surface Measurement Tool - Launcher
 cd /d "%~dp0"
+set PYTHONIOENCODING=utf-8
 
 echo.
 echo ========================================
