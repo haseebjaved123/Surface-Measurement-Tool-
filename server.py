@@ -296,6 +296,7 @@ def index():
 
                   <div class="card">
                     <h3>Detected Dimensions</h3>
+                    {% if result.get('dimensions_extracted') and result['dimensions_extracted'] %}
                     <table>
                       <tr>
                         <th>Value</th>
@@ -306,14 +307,17 @@ def index():
                       </tr>
                       {% for d in result['dimensions_extracted'] %}
                       <tr>
-                        <td>{{ d['value'] }}</td>
-                        <td>{{ d['unit'] }}</td>
-                        <td>{{ d['value_mm'] }}</td>
-                        <td>{{ "%.2f"|format(d['confidence']) }}</td>
-                        <td>{{ d['text'] }}</td>
+                        <td>{{ d.get('value', '') }}</td>
+                        <td>{{ d.get('unit', '') }}</td>
+                        <td>{{ d.get('value_mm', '') }}</td>
+                        <td>{{ "%.2f"|format(d.get('confidence', 0)) }}</td>
+                        <td>{{ d.get('text', '') }}</td>
                       </tr>
                       {% endfor %}
                     </table>
+                    {% else %}
+                    <p class="muted">No dimensions detected. Try uploading a clearer image or check if the image contains visible dimension labels.</p>
+                    {% endif %}
                   </div>
 
                   <div class="card">
@@ -345,7 +349,7 @@ def index():
         result=result,
         uploaded_name=uploaded_name,
         dataset_files=dataset_files,
-        output_name=Path(result["visualization_path"]).name if result else "",
+        output_name=Path(result["visualization_path"]).name if result and result.get("visualization_path") else "",
     )
 
 

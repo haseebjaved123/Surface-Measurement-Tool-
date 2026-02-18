@@ -98,17 +98,21 @@ class OCRDetector:
             r'(\d+\.?\d*)\s*[xX×]\s*(\d+\.?\d*)\s*[xX×]?\s*(\d+\.?\d*)?\s*(cm|mm|m|CM|MM|M)?\b',  # 3D dimensions
             r'(\d+\.?\d*)\s*(?:CM|MM|M)',  # Uppercase units
             r'(\d+\.?\d*)\s*(?:centimeter|millimeter|meter)',  # Full words
+            r'\b(\d+\.?\d*)\b',  # Pure numbers (standalone) - assume cm for typical dimension values
         ]
         
         for item in extracted_data:
             text = item['text']
-            # Clean text - remove common OCR errors
-            text = text.replace('O', '0').replace('o', '0')  # Common OCR mistake
-            text = text.replace('l', '1').replace('I', '1')  # Another common mistake
+            # Clean text - remove common OCR errors but preserve Korean/Unicode characters
+            # Only replace when it's clearly a mistake (not part of Korean text)
+            original_text = text
+            # Clean common OCR mistakes only for numeric patterns
+            text_clean = text.replace('O', '0').replace('o', '0')  # Common OCR mistake
+            text_clean = text_clean.replace('l', '1').replace('I', '1')  # Another common mistake
             
-            # Try to match dimension patterns
+            # Try to match dimension patterns on cleaned text
             for pattern in enhanced_patterns:
-                matches = re.finditer(pattern, text, re.IGNORECASE)
+                matches = re.finditer(pattern, text_clean, re.IGNORECASE)
                 for match in matches:
                     groups = match.groups()
                     if len(groups) >= 1:
@@ -116,8 +120,19 @@ class OCRDetector:
                             # Extract numeric value and unit
                             value = float(groups[0])
                             
+                            # Skip very small numbers that are likely not dimensions (confidence scores, indices)
+                            # Also skip numbers in parentheses that look like confidence scores (e.g., "(1.00)")
+                            if value < 2.0:
+                                # Check if this number is in parentheses (likely a confidence score)
+                                match_text = match.group()
+                                if '(' in original_text and ')' in original_text:
+                                    # Check if this match is inside parentheses
+                                    match_start = original_text.find(match_text)
+                                    if match_start > 0 and original_text[match_start-1] == '(':
+                                        continue  # Skip confidence scores
+                            
                             # Find unit
-                            unit = 'mm'  # default
+                            unit = None
                             for g in groups[1:]:
                                 if g and g.lower() in ['cm', 'mm', 'm', 'centimeter', 'millimeter', 'meter']:
                                     if 'centimeter' in g.lower() or g.lower() == 'cm':
@@ -127,6 +142,15 @@ class OCRDetector:
                                     elif 'meter' in g.lower() or g.lower() == 'm':
                                         unit = 'm'
                                     break
+                            
+                            # If no unit found (pure number), infer from value range
+                            if unit is None:
+                                # For numbers < 1000, assume cm (common for dimensions)
+                                # For numbers >= 1000, assume mm
+                                if value < 1000:
+                                    unit = 'cm'
+                                else:
+                                    unit = 'mm'
                             
                             # Convert to mm for consistency
                             if unit == 'm':
@@ -144,7 +168,7 @@ class OCRDetector:
                                     'value': value,
                                     'value_mm': value_mm,
                                     'unit': unit,
-                                    'original_text': text,
+                                    'original_text': original_text,  # Keep original text with Korean characters
                                     'confidence': item['confidence'],
                                     'bbox': item['bbox'],
                                     'full_match': match.group()
