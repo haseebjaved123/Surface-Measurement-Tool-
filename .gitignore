@@ -1,0 +1,32 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Project output (optional: remove if you want to commit sample results)
+# input_images/*
+# output_images/*
+# processed_images/*
+results/*.json
+results/*.txt
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Keep empty dirs (Git doesn't track empty dirs; add .gitkeep if needed)
+# input_images/.gitkeep
+# output_images/.gitkeep
+# processed_images/.gitkeep
+# results/.gitkeep

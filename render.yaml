@@ -1,0 +1,12 @@
+# Render.com Blueprint - optional one-click deploy
+# See https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: surface-measurement-tool
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -b 0.0.0.0:$PORT --timeout 300 server:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.7

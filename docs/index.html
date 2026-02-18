@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Surface Measurement Tool – Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --surface: #161b22;
+      --surface-elevated: #1c2229;
+      --border: #2d3544;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #3fb950;
+      --accent-hover: #56d364;
+      --error: #f85149;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(63, 185, 80, 0.08), transparent);
+    }
+    .header {
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .header p {
+      margin: 0.5rem 0 0;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+    .main {
+      padding: 2rem 1.5rem 3rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      margin: 0 0 0.25rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .card-desc {
+      margin: 0 0 1.25rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    .form-row {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr 1fr auto;
+      align-items: end;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 480px) {
+      .form-row { grid-template-columns: 1fr 1fr; }
+      .form-row .full { grid-column: 1 / -1; }
+    }
+    .field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface-elevated);
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(63, 185, 80, 0.2);
+    }
+    input::placeholder { color: var(--text-muted); opacity: 0.8; }
+    .section {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .section[data-shape] { display: none; }
+    .section[data-shape].active { display: block; }
+    .section-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .section .field { margin-bottom: 0.75rem; }
+    .section .field:last-child { margin-bottom: 0; }
+    .section .inputs {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    .checkbox-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+    }
+    .checkbox-wrap input[type="checkbox"] {
+      width: auto;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .checkbox-wrap label {
+      font-size: 0.875rem;
+      text-transform: none;
+      letter-spacing: 0;
+      cursor: pointer;
+      margin: 0;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 1.25rem;
+      padding: 0.85rem 1.5rem;
+      background: var(--accent);
+      color: #0c0f14;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.05s;
+    }
+    .btn:hover { background: var(--accent-hover); }
+    .btn:active { transform: scale(0.98); }
+    .error-msg {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      background: rgba(248, 81, 73, 0.12);
+      border: 1px solid rgba(248, 81, 73, 0.3);
+      border-radius: var(--radius-sm);
+      color: var(--error);
+      font-size: 0.9rem;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+    .result-box {
+      margin-top: 1.25rem;
+      padding: 1.25rem;
+      background: rgba(63, 185, 80, 0.08);
+      border: 1px solid rgba(63, 185, 80, 0.25);
+      border-radius: var(--radius-sm);
+      display: none;
+    }
+    .result-box.show { display: block; }
+    .result-box .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .result-box .shape {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .result-box .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .result-box .value-sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    .footer a:hover { text-decoration: underline; }
+    .footer .muted { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Surface Measurement Tool</h1>
+    <p>Calculate surface area for cylinders, buckets, and more — no install, runs in your browser.</p>
+  </header>
+  <main class="main">
+    <div class="card">
+      <h2 class="card-title">Surface area calculator</h2>
+      <p class="card-desc">Choose a shape, enter dimensions, and get the total surface area in cm² and m².</p>
+      <form id="calc">
+        <div class="form-row">
+          <div class="field">
+            <label for="shape">Shape</label>
+            <select id="shape" name="shape" required>
+              <option value="cylinder">Cylinder</option>
+              <option value="rectangular">Rectangular</option>
+              <option value="frustum">Frustum</option>
+              <option value="bucket">Bucket</option>
+              <option value="scoop">Scoop</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="unit">Unit</label>
+            <select id="unit" name="unit">
+              <option value="mm">mm</option>
+              <option value="cm">cm</option>
+              <option value="m">m</option>
+            </select>
+          </div>
+          <div class="field full checkbox-wrap">
+            <input type="checkbox" id="include_top_bottom" name="include_top_bottom">
+            <label for="include_top_bottom">Include top & bottom</label>
+          </div>
+        </div>
+
+        <div class="section" data-shape="cylinder">
+          <div class="section-label">Cylinder — diameter & height</div>
+          <div class="inputs">
+            <div class="field">
+              <label for="cylinder_diameter">Diameter</label>
+              <input type="number" step="any" id="cylinder_diameter" name="cylinder_diameter" placeholder="e.g. 100">
+            </div>
+            <div class="field">
+              <label for="cylinder_height">Height</label>
+              <input type="number" step="any" id="cylinder_height" name="cylinder_height" placeholder="e.g. 200">
+            </div>
+          </div>
+        </div>
+        <div class="section" data-shape="rectangular">
+          <div class="section-label">Rectangular — length, width, height</div>
+          <div class="inputs">
+            <div class="field">
+              <label for="rect_length">Length</label>
+              <input type="number" step="any" id="rect_length" name="rect_length" placeholder="Length">
+            </div>
+            <div class="field">
+              <label for="rect_width">Width</label>
+              <input type="number" step="any" id="rect_width" name="rect_width" placeholder="Width">
+            </div>
+            <div class="field">
+              <label for="rect_height">Height</label>
+              <input type="number" step="any" id="rect_height" name="rect_height" placeholder="Height">
+            </div>
+          </div>
+        </div>
+        <div class="section" data-shape="frustum">
+          <div class="section-label">Frustum — top Ø, bottom Ø, height</div>
+          <div class="inputs">
+            <div class="field">
+              <label for="frustum_top_diameter">Top diameter</label>
+              <input type="number" step="any" id="frustum_top_diameter" name="frustum_top_diameter" placeholder="Top Ø">
+            </div>
+            <div class="field">
+              <label for="frustum_bottom_diameter">Bottom diameter</label>
+              <input type="number" step="any" id="frustum_bottom_diameter" name="frustum_bottom_diameter" placeholder="Bottom Ø">
+            </div>
+            <div class="field">
+              <label for="frustum_height">Height</label>
+              <input type="number" step="any" id="frustum_height" name="frustum_height" placeholder="Height">
+            </div>
+          </div>
+        </div>
+        <div class="section" data-shape="bucket">
+          <div class="section-label">Bucket — top Ø, bottom Ø, height</div>
+          <div class="inputs">
+            <div class="field">
+              <label for="bucket_top_diameter">Top diameter</label>
+              <input type="number" step="any" id="bucket_top_diameter" name="bucket_top_diameter" placeholder="Top Ø">
+            </div>
+            <div class="field">
+              <label for="bucket_bottom_diameter">Bottom diameter</label>
+              <input type="number" step="any" id="bucket_bottom_diameter" name="bucket_bottom_diameter" placeholder="Bottom Ø">
+            </div>
+            <div class="field">
+              <label for="bucket_height">Height</label>
+              <input type="number" step="any" id="bucket_height" name="bucket_height" placeholder="Height">
+            </div>
+          </div>
+        </div>
+        <div class="section" data-shape="scoop">
+          <div class="section-label">Scoop — top Ø, bottom Ø, height</div>
+          <div class="inputs">
+            <div class="field">
+              <label for="scoop_top_diameter">Top diameter</label>
+              <input type="number" step="any" id="scoop_top_diameter" name="scoop_top_diameter" placeholder="Top Ø">
+            </div>
+            <div class="field">
+              <label for="scoop_bottom_diameter">Bottom diameter</label>
+              <input type="number" step="any" id="scoop_bottom_diameter" name="scoop_bottom_diameter" placeholder="Bottom Ø">
+            </div>
+            <div class="field">
+              <label for="scoop_height">Height</label>
+              <input type="number" step="any" id="scoop_height" name="scoop_height" placeholder="Height">
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn">Calculate surface area</button>
+      </form>
+      <div id="error" class="error-msg" role="alert"></div>
+      <div id="result" class="result-box">
+        <div class="label">Result</div>
+        <div class="shape" id="result-shape"></div>
+        <div class="value" id="result-value"></div>
+        <div class="value-sub" id="result-value-sub"></div>
+      </div>
+    </div>
+    <footer class="footer">
+      <a href="https://github.com/haseebjaved123/Surface-Measurement-Tool-">View on GitHub</a>
+      <p class="muted">Full app (OCR + upload): run by code — double-click <strong>RUN.bat</strong> or run <code>python server.py</code></p>
+    </footer>
+  </main>
+
+  <script>
+    const PI = Math.PI;
+    function toMm(v, unit) {
+      if (unit === 'm') return v * 1000;
+      if (unit === 'cm') return v * 10;
+      return v;
+    }
+    function cylinder(diameterMm, heightMm, includeTopBottom) {
+      const r = diameterMm / 2;
+      const lateral = 2 * PI * r * heightMm;
+      const topBottom = includeTopBottom ? 2 * PI * r * r : 0;
+      return { total: lateral + topBottom, shape: 'Cylinder' };
+    }
+    function rectangular(lMm, wMm, hMm, includeTopBottom) {
+      const lateral = 2 * (lMm * hMm + wMm * hMm);
+      const topBottom = includeTopBottom ? 2 * (lMm * wMm) : 0;
+      return { total: lateral + topBottom, shape: 'Rectangular' };
+    }
+    function frustum(topD, bottomD, heightMm) {
+      const tr = topD / 2, br = bottomD / 2;
+      const slant = Math.sqrt(heightMm * heightMm + Math.pow(tr - br, 2));
+      const lateral = PI * (tr + br) * slant;
+      const topArea = PI * tr * tr, bottomArea = PI * br * br;
+      return { total: lateral + topArea + bottomArea, shape: 'Frustum' };
+    }
+    function bucket(topD, bottomD, heightMm) {
+      const tr = topD / 2, br = bottomD / 2;
+      const slant = Math.sqrt(heightMm * heightMm + Math.pow(tr - br, 2));
+      const lateral = PI * (tr + br) * slant;
+      const bottomArea = PI * br * br;
+      return { total: lateral + bottomArea, shape: 'Bucket' };
+    }
+    function scoop(topD, bottomD, heightMm) {
+      var o = bucket(topD, bottomD, heightMm);
+      o.shape = 'Scoop';
+      return o;
+    }
+
+    function getNum(form, name) {
+      var v = form.querySelector('[name="' + name + '"]').value.trim();
+      if (!v) return null;
+      var n = parseFloat(v);
+      return isNaN(n) ? null : n;
+    }
+
+    function toggleShape() {
+      var shape = document.getElementById('shape').value;
+      document.querySelectorAll('.section[data-shape]').forEach(function(el) {
+        el.classList.toggle('active', el.dataset.shape === shape);
+      });
+    }
+    document.getElementById('shape').addEventListener('change', toggleShape);
+    toggleShape();
+
+    document.getElementById('calc').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var form = e.target;
+      var errorEl = document.getElementById('error');
+      var resultEl = document.getElementById('result');
+      errorEl.classList.remove('show');
+      resultEl.classList.remove('show');
+
+      var unit = (form.querySelector('[name="unit"]').value || 'mm').toLowerCase();
+      var includeTopBottom = form.querySelector('[name="include_top_bottom"]').checked;
+      var shape = form.querySelector('[name="shape"]').value;
+
+      var out = null;
+      if (shape === 'cylinder') {
+        var d = getNum(form, 'cylinder_diameter'), h = getNum(form, 'cylinder_height');
+        if (d == null || h == null) { errorEl.textContent = 'Please enter diameter and height.'; errorEl.classList.add('show'); return; }
+        out = cylinder(toMm(d, unit), toMm(h, unit), includeTopBottom);
+      } else if (shape === 'rectangular') {
+        var l = getNum(form, 'rect_length'), w = getNum(form, 'rect_width'), h = getNum(form, 'rect_height');
+        if (l == null || w == null || h == null) { errorEl.textContent = 'Please enter length, width, and height.'; errorEl.classList.add('show'); return; }
+        out = rectangular(toMm(l, unit), toMm(w, unit), toMm(h, unit), includeTopBottom);
+      } else if (shape === 'frustum') {
+        var t = getNum(form, 'frustum_top_diameter'), b = getNum(form, 'frustum_bottom_diameter'), h = getNum(form, 'frustum_height');
+        if (t == null || b == null || h == null) { errorEl.textContent = 'Please enter top diameter, bottom diameter, and height.'; errorEl.classList.add('show'); return; }
+        out = frustum(toMm(t, unit), toMm(b, unit), toMm(h, unit));
+      } else if (shape === 'bucket') {
+        var t = getNum(form, 'bucket_top_diameter'), b = getNum(form, 'bucket_bottom_diameter'), h = getNum(form, 'bucket_height');
+        if (t == null || b == null || h == null) { errorEl.textContent = 'Please enter top diameter, bottom diameter, and height.'; errorEl.classList.add('show'); return; }
+        out = bucket(toMm(t, unit), toMm(b, unit), toMm(h, unit));
+      } else if (shape === 'scoop') {
+        var t = getNum(form, 'scoop_top_diameter'), b = getNum(form, 'scoop_bottom_diameter'), h = getNum(form, 'scoop_height');
+        if (t == null || b == null || h == null) { errorEl.textContent = 'Please enter top diameter, bottom diameter, and height.'; errorEl.classList.add('show'); return; }
+        out = scoop(toMm(t, unit), toMm(b, unit), toMm(h, unit));
+      }
+
+      var totalMm2 = out.total;
+      var totalCm2 = totalMm2 / 100;
+      var totalM2 = totalMm2 / 1e6;
+      document.getElementById('result-shape').textContent = out.shape;
+      document.getElementById('result-value').textContent = totalCm2.toFixed(2) + ' cm²';
+      document.getElementById('result-value-sub').textContent = totalM2.toFixed(6) + ' m²';
+      resultEl.classList.add('show');
+    });
+  </script>
+</body>
+</html>
