@@ -183,7 +183,8 @@
       border-radius: var(--radius-sm);
       display: none;
     }
-    .result-box.show { display: block; }
+    .result-box.show { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     .result-box .label {
       font-size: 0.75rem;
       text-transform: uppercase;
@@ -223,12 +224,12 @@
 <body>
   <header class="header">
     <h1>Surface Measurement Tool</h1>
-    <p>Calculate surface area for cylinders, buckets, and more — no install, runs in your browser.</p>
+    <p>Surface area calculator for industrial shapes — cylinder, rectangular, frustum, bucket, scoop. No install, runs in your browser.</p>
   </header>
   <main class="main">
     <div class="card">
       <h2 class="card-title">Surface area calculator</h2>
-      <p class="card-desc">Choose a shape, enter dimensions, and get the total surface area in cm² and m².</p>
+      <p class="card-desc">Select a shape, enter dimensions in mm, cm, or m, and get total surface area in cm² and m².</p>
       <form id="calc">
         <div class="form-row">
           <div class="field">

@@ -1,87 +1,68 @@
 # Surface Measurement Tool
 
-## Calculator (runs on GitHub)
-
-**[→ Open the calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** — surface area for **cylinder**, **rectangular**, **frustum**, **bucket**, **scoop**. No install, runs in the browser.
-
-*If the link above doesn’t load:* In this repo go to **Settings → Pages → Source: Deploy from a branch → Branch: main, Folder: /docs → Save**. Wait 1–2 minutes, then the link will work.
+> Surface area calculator for industrial shapes — **cylinder**, **rectangular**, **frustum**, **bucket**, **scoop**. No install, runs in the browser.
 
 ---
 
-## About
+## Try the calculator
 
-- **Calculator (this repo):** The link above runs a **static calculator** from the `docs/` folder on GitHub Pages. It works entirely in the browser.
-- **Full app (OCR + calculator):** The same repo contains the **full app** (upload image → OCR dimensions → surface area). OCR needs a server, so it **does not run on GitHub**. Run it locally or deploy to Render (see below).
+**[→ Open calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** — runs on GitHub Pages, no sign-in.
 
----
-
-## Repository contents
-
-| What | Where |
-|------|--------|
-| **Calculator (live on GitHub)** | `docs/index.html` — used by GitHub Pages |
-| **Full app (server + OCR)** | `server.py`, `main.py`, `ocr_detector.py`, etc. |
-| **Run full app locally** | Double‑click **RUN.bat** or run `python server.py` |
-| **Deploy full app online** | [Deploy to Render (free)](https://render.com/deploy?repo=https://github.com/haseebjaved123/Surface-Measurement-Tool-) |
+*If the link doesn’t load yet:* In this repo go to **Settings → Pages → Deploy from a branch → Branch: main, Folder: /docs → Save**, then wait 1–2 minutes.
 
 ---
 
-## Run the full app locally (OCR + calculator)
+## What’s in this repo
 
-1. Install once: double‑click **INSTALL.bat** or run `pip install -r requirements.txt`
-2. Run: double‑click **RUN.bat** (or run `python server.py`)
-3. Open http://127.0.0.1:8000 — upload images for OCR and use the calculator
-
-OCR runs only when the app is run locally or deployed to a host (e.g. Render); it does not run on GitHub Pages.
+| | |
+|--|--|
+| **Calculator (live)** | `docs/index.html` — the link above. Static, runs 100% in the browser. |
+| **Full app (OCR + calculator)** | `server.py`, `main.py`, etc. Upload image → OCR detects dimensions → surface area. Needs a server (local or Render). |
+| **Run full app locally** | Double‑click **RUN.bat** or run `python server.py`, then open http://127.0.0.1:8000 |
+| **Deploy full app free** | [Deploy to Render](https://render.com/deploy?repo=https://github.com/haseebjaved123/Surface-Measurement-Tool-) |
 
 ---
 
-## Deploy the full app (with OCR) for free
+## Run locally (full app with OCR)
 
-**[→ Deploy to Render](https://render.com/deploy?repo=https://github.com/haseebjaved123/Surface-Measurement-Tool-)** — sign in with GitHub, click Create Web Service. You’ll get a URL like `https://surface-measurement-tool-xxxx.onrender.com`.  
-Free tier may sleep after 15 min of no use; first visit after that can take 30–60 seconds.
+1. **Install once:** Double‑click **INSTALL.bat** or run `pip install -r requirements.txt`
+2. **Run:** Double‑click **RUN.bat** (or `python server.py`)
+3. Open **http://127.0.0.1:8000** — upload images for OCR and use the calculator
+
+OCR runs only when you run the app locally or deploy it (e.g. Render); it does not run on GitHub Pages.
+
+---
+
+## Deploy full app (with OCR) for free
+
+**[→ Deploy to Render](https://render.com/deploy?repo=https://github.com/haseebjaved123/Surface-Measurement-Tool-)** — sign in with GitHub, create web service. Free tier may sleep after 15 min of no use.
 
 ---
 
 ## Repository structure
 
 ```
-├── docs/
-│   └── index.html          ← Calculator (GitHub Pages — runs on GitHub)
-├── server.py               ← Full web app (Flask + OCR)
-├── main.py                  ← CLI: process images with OCR
-├── ocr_detector.py
-├── image_preprocessor.py
-├── geometry_calculator.py
-├── smart_calculator.py
-├── config.py
+├── docs/index.html     ← Calculator (GitHub Pages)
+├── server.py           ← Full web app (Flask + OCR)
+├── main.py             ← CLI: process images with OCR
+├── ocr_detector.py, image_preprocessor.py, geometry_calculator.py, smart_calculator.py, config.py
 ├── requirements.txt
-├── RUN.bat                  ← Run full app (double‑click)
-├── INSTALL.bat              ← Install dependencies
-├── PUSH.bat                 ← Push this repo to GitHub
-├── Procfile, Dockerfile     ← For Render / Docker deploy
-├── input_images/
-├── output_images/
-├── processed_images/
-└── results/
+├── RUN.bat             ← Run full app
+├── INSTALL.bat         ← Install dependencies
+├── Procfile, Dockerfile ← For Render / Docker
+├── input_images/, output_images/, processed_images/, results/
 ```
 
 ---
 
-## Push this project to GitHub
+## Push to GitHub
 
-Your repo [Surface-Measurement-Tool-](https://github.com/haseebjaved123/Surface-Measurement-Tool-) currently has only a README. To add all files and get the calculator running:
+To put all files on [Surface-Measurement-Tool-](https://github.com/haseebjaved123/Surface-Measurement-Tool-):
 
-1. Open a terminal in this folder and run:
-   ```bash
-   git init
-   git remote add origin https://github.com/haseebjaved123/Surface-Measurement-Tool-.git
-   git add .
-   git commit -m "Add full app and calculator"
-   git branch -M main
-   git push -u origin main
-   ```
-2. On GitHub: **Settings → Pages → Deploy from a branch → main → /docs → Save**.
-3. After 1–2 minutes, the calculator will be live at: **https://haseebjaved123.github.io/Surface-Measurement-Tool-/**  
+```bash
+git add .
+git commit -m "Update calculator and README"
+git push origin main
+```
 
-Detailed steps (no coding): see **PUSH_INSTRUCTIONS.md**. You can also double‑click **PUSH.bat** after setting the remote once.
+Then enable **Settings → Pages → Deploy from branch → main → /docs** so the calculator link works.
