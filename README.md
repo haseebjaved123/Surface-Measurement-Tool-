@@ -4,7 +4,7 @@
 
 **AI-powered OCR tool for automatic dimension detection and surface area calculation**
 
-[![Calculator](https://img.shields.io/badge/Calculator-Live-green)](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)
+[![Manual Calculator](https://img.shields.io/badge/Manual_Calculator-Live-green)](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)
 [![Python](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org/)
 [![PaddleOCR](https://img.shields.io/badge/PaddleOCR-2.7-orange)](https://github.com/PaddlePaddle/PaddleOCR)
 
@@ -60,11 +60,11 @@ Automatically detect dimensions from images of industrial tools using **PaddleOC
 
 ## 🚀 Quick Start
 
-### Try the Calculator (No Installation)
+### Manual Calculator (No Installation)
 
-**[→ Open Calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** - Runs entirely in your browser, no server needed.
+**[→ Open Manual Calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** — Enter dimensions and get surface area. Runs in your browser, no server needed.
 
-> **Note:** If the calculator link doesn't work, enable GitHub Pages: Go to **Settings → Pages → Source: Deploy from a branch → Branch: main, Folder: /docs → Save**. Wait 1-2 minutes for it to deploy.
+> **To enable the link:** In this repo open **Settings → Pages**. Under **Source** choose **branch main**, folder **/docs**, then **Save**. The Manual Calculator will be available at the link above after 1–2 minutes.
 
 Calculate surface area for:
 - **Cylinder** - diameter & height
@@ -113,7 +113,7 @@ Calculate surface area for:
 - **Backend:** Flask (Python web framework)
 - **Image Processing:** OpenCV, PIL
 - **Frontend:** HTML5, CSS3, JavaScript (vanilla)
-- **Deployment:** GitHub Pages (calculator), Docker-ready (full app)
+- **Manual calculator:** GitHub Pages (runs in browser). Full app runs locally or on a host.
 
 ---
 
@@ -122,7 +122,7 @@ Calculate surface area for:
 ```
 Surface-Measurement-Tool/
 ├── docs/
-│   ├── index.html          # Calculator (GitHub Pages)
+│   ├── index.html          # Manual Calculator (GitHub Pages)
 │   └── images/             # Example outputs
 ├── server.py               # Web app (Flask + OCR)
 ├── main.py                 # CLI: process images
@@ -190,7 +190,7 @@ Edit `config.py` to customize:
 
 ## 🔗 Links
 
-- **Live Calculator:** [https://haseebjaved123.github.io/Surface-Measurement-Tool-/](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)
+- **Manual Calculator (live):** [https://haseebjaved123.github.io/Surface-Measurement-Tool-/](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)
 - **Repository:** [https://github.com/haseebjaved123/Surface-Measurement-Tool-](https://github.com/haseebjaved123/Surface-Measurement-Tool-)
 
 ---
