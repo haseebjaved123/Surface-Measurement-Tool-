@@ -723,10 +723,14 @@
         `Surface Area: ${document.getElementById('result-main').textContent}\n` +
         `Volume: ${document.getElementById('result-details').querySelectorAll('.result-item')[2]?.textContent || 'N/A'}`;
       navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
-        const orig = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = orig, 2000);
+        const btn = document.querySelector('#result .btn-secondary');
+        if (btn) {
+          const orig = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = orig, 2000);
+        }
+      }).catch(() => {
+        alert('Could not copy to clipboard');
       });
     }
 

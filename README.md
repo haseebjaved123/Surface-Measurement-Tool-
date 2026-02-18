@@ -4,7 +4,7 @@
 
 **AI-powered OCR tool for automatic dimension detection and surface area calculation**
 
-[![Manual Calculator](https://img.shields.io/badge/Manual_Calculator-Live-green)](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)
+[![Manual Calculator](https://img.shields.io/badge/Manual_Calculator-Live-green)](https://htmlpreview.github.io/?https://github.com/haseebjaved123/Surface-Measurement-Tool-/blob/main/docs/index.html)
 [![Python](https://img.shields.io/badge/Python-3.11-blue)](https://www.python.org/)
 [![PaddleOCR](https://img.shields.io/badge/PaddleOCR-2.7-orange)](https://github.com/PaddlePaddle/PaddleOCR)
 
@@ -96,18 +96,12 @@ The tool automatically detects dimensions from images and calculates surface are
 
 ### Manual Calculator (No Installation)
 
-**[→ Open Manual Calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** — Enter dimensions and get detailed surface area and volume calculations. Runs in your browser, no server needed.
+**→ [Open Manual Calculator (GitHub Pages)](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)**  
+**→ [Open Calculator Directly (works now)](https://htmlpreview.github.io/?https://github.com/haseebjaved123/Surface-Measurement-Tool-/blob/main/docs/index.html)**
 
-<div align="center" style="background: rgba(248, 81, 73, 0.1); border: 1px solid rgba(248, 81, 73, 0.3); border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+Enter dimensions and get detailed surface area and volume calculations. Runs in your browser, no server needed.
 
-**⚠️ Calculator Link Not Working?**
-
-The link above shows 404 until GitHub Pages is enabled.  
-**Quick fix:** See **[ENABLE_PAGES.md](ENABLE_PAGES.md)** for step-by-step instructions.
-
-**Or:** Go to **Settings → Pages** → **Source: branch main, folder /docs** → **Save** → Wait 2 minutes
-
-</div>
+> **Note:** The first link requires GitHub Pages to be enabled (see [ENABLE_PAGES.md](ENABLE_PAGES.md)). The second link works immediately using GitHub's HTML preview.
 
 **Calculator Features:**
 - 📐 **7 Shape Types:** Cylinder, Rectangular, Frustum, Bucket, Scoop, Cone, Sphere
@@ -237,7 +231,8 @@ Edit `config.py` to customize:
 
 ## 🔗 Links
 
-- **Manual Calculator (live):** [https://haseebjaved123.github.io/Surface-Measurement-Tool-/](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)
+- **Manual Calculator (direct link - works now):** [Open Calculator](https://htmlpreview.github.io/?https://github.com/haseebjaved123/Surface-Measurement-Tool-/blob/main/docs/index.html)
+- **Manual Calculator (GitHub Pages - requires Pages enabled):** [https://haseebjaved123.github.io/Surface-Measurement-Tool-/](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)
 - **Repository:** [https://github.com/haseebjaved123/Surface-Measurement-Tool-](https://github.com/haseebjaved123/Surface-Measurement-Tool-)
 
 ---
