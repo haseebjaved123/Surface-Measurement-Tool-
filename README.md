@@ -64,6 +64,8 @@ Automatically detect dimensions from images of industrial tools using **PaddleOC
 
 **[→ Open Calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** - Runs entirely in your browser, no server needed.
 
+> **Note:** If the calculator link doesn't work, enable GitHub Pages: Go to **Settings → Pages → Source: Deploy from a branch → Branch: main, Folder: /docs → Save**. Wait 1-2 minutes for it to deploy.
+
 Calculate surface area for:
 - **Cylinder** - diameter & height
 - **Rectangular** - length, width, height
