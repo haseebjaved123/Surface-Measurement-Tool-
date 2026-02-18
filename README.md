@@ -98,6 +98,17 @@ The tool automatically detects dimensions from images and calculates surface are
 
 **[→ Open Manual Calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** — Enter dimensions and get detailed surface area and volume calculations. Runs in your browser, no server needed.
 
+<div align="center" style="background: rgba(248, 81, 73, 0.1); border: 1px solid rgba(248, 81, 73, 0.3); border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+
+**⚠️ Calculator Link Not Working?**
+
+The link above shows 404 until GitHub Pages is enabled.  
+**Quick fix:** See **[ENABLE_PAGES.md](ENABLE_PAGES.md)** for step-by-step instructions.
+
+**Or:** Go to **Settings → Pages** → **Source: branch main, folder /docs** → **Save** → Wait 2 minutes
+
+</div>
+
 **Calculator Features:**
 - 📐 **7 Shape Types:** Cylinder, Rectangular, Frustum, Bucket, Scoop, Cone, Sphere
 - 📊 **Volume Calculations:** Get volume in cm³ and liters
@@ -106,8 +117,6 @@ The tool automatically detects dimensions from images and calculates surface are
 - 📝 **Calculation History:** View past calculations (stored locally)
 - 📋 **Copy Results:** One-click copy of calculation results
 - 🔄 **Multiple Units:** Input in mm, cm, or m
-
-> **⚠️ If the link shows 404:** Enable GitHub Pages: Go to **Settings → Pages** → **Source: branch main, folder /docs** → **Save**. Wait 1–2 minutes for the calculator to be available.
 
 ---
 
