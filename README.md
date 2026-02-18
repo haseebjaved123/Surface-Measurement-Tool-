@@ -26,35 +26,69 @@ Automatically detect dimensions from images of industrial tools using **PaddleOC
 - ✅ **Surface Area Calculation** - Accurate geometric calculations with multiple unit outputs (mm², cm², m²)
 - ✅ **Visual Labeling** - Generates labeled images showing detected dimensions
 - ✅ **Web Interface** - Easy-to-use Flask web app for uploading and processing images
-- ✅ **Manual Calculator** - Static calculator runs entirely in the browser (no server needed)
+- ✅ **Enhanced Manual Calculator** - Advanced calculator with volume calculations, shape diagrams, calculation history, and 7 shape types (cylinder, rectangular, frustum, bucket, scoop, cone, sphere)
 
 ---
 
 ## 📸 How It Works
 
-### Example 1: Bucket/Frustum Detection
+### OCR Processing Examples
+
+The tool automatically detects dimensions from images and calculates surface areas:
+
+#### Example 1: Bucket/Frustum Detection
+
+<div align="center">
 
 ![Bucket OCR Example](docs/images/example-bucket.png)
 
-**Detected:**
-- Top diameter: 57.0 cm (570.0 mm)
-- Bottom diameter: 58.8 cm (588.0 mm)  
-- Height: 588.0 mm
+</div>
 
-**Calculated Surface Area:** 3156.39 cm² (0.315639 m²)
+**Detected Dimensions:**
+- Top diameter: **57.0 cm** (570.0 mm)
+- Bottom diameter: **58.8 cm** (588.0 mm)  
+- Height: **588.0 mm**
+
+**Results:**
+- Surface Area: **3156.39 cm²** (0.315639 m²)
+- Shape identified: **Frustum**
 
 ---
 
-### Example 2: Scoop Detection
+#### Example 2: Scoop Detection
+
+<div align="center">
 
 ![Scoop OCR Example](docs/images/example-scoop.png)
 
-**Detected:**
-- Top diameter: 19.0 cm (190.0 mm)
-- Bottom diameter: 14.0 cm (140.0 mm)
-- Height: 11.0 cm (110.0 mm)
+</div>
 
-**Calculated Surface Area:** 541.38 cm² (0.054138 m²)
+**Detected Dimensions:**
+- Top diameter: **19.0 cm** (190.0 mm)
+- Bottom diameter: **14.0 cm** (140.0 mm)
+- Height: **11.0 cm** (110.0 mm)
+
+**Results:**
+- Surface Area: **541.38 cm²** (0.054138 m²)
+- Shape identified: **Scoop**
+
+---
+
+### Workflow
+
+```
+📷 Upload Image
+    ↓
+🔍 OCR Detection (PaddleOCR)
+    ↓
+📏 Dimension Extraction
+    ↓
+🧮 Shape Identification
+    ↓
+📊 Surface Area Calculation
+    ↓
+📝 Labeled Output + Results
+```
 
 ---
 
@@ -62,16 +96,18 @@ Automatically detect dimensions from images of industrial tools using **PaddleOC
 
 ### Manual Calculator (No Installation)
 
-**[→ Open Manual Calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** — Enter dimensions and get surface area. Runs in your browser, no server needed.
+**[→ Open Manual Calculator](https://haseebjaved123.github.io/Surface-Measurement-Tool-/)** — Enter dimensions and get detailed surface area and volume calculations. Runs in your browser, no server needed.
 
-> **To enable the link:** In this repo open **Settings → Pages**. Under **Source** choose **branch main**, folder **/docs**, then **Save**. The Manual Calculator will be available at the link above after 1–2 minutes.
+**Calculator Features:**
+- 📐 **7 Shape Types:** Cylinder, Rectangular, Frustum, Bucket, Scoop, Cone, Sphere
+- 📊 **Volume Calculations:** Get volume in cm³ and liters
+- 📈 **Detailed Breakdown:** Lateral area, top/bottom areas separately
+- 🎨 **Visual Diagrams:** SVG shape diagrams for each calculation
+- 📝 **Calculation History:** View past calculations (stored locally)
+- 📋 **Copy Results:** One-click copy of calculation results
+- 🔄 **Multiple Units:** Input in mm, cm, or m
 
-Calculate surface area for:
-- **Cylinder** - diameter & height
-- **Rectangular** - length, width, height
-- **Frustum** - top Ø, bottom Ø, height
-- **Bucket** - top Ø, bottom Ø, height
-- **Scoop** - top Ø, bottom Ø, height
+> **⚠️ If the link shows 404:** Enable GitHub Pages: Go to **Settings → Pages** → **Source: branch main, folder /docs** → **Save**. Wait 1–2 minutes for the calculator to be available.
 
 ---
 
@@ -104,6 +140,8 @@ Calculate surface area for:
 | **Frustum** | Top Ø, Bottom Ø, Height | Tapered containers |
 | **Bucket** | Top Ø, Bottom Ø, Height | Industrial buckets |
 | **Scoop** | Top Ø, Bottom Ø, Height | Measuring scoops |
+| **Cone** | Base Diameter, Height | Conical hoppers, funnels |
+| **Sphere** | Diameter | Spherical tanks, balls |
 
 ---
 

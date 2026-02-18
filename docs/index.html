@@ -51,7 +51,7 @@
     }
     .main {
       padding: 2rem 1.5rem 3rem;
-      max-width: 520px;
+      max-width: 680px;
       margin: 0 auto;
     }
     .card {
@@ -60,6 +60,7 @@
       border-radius: var(--radius);
       padding: 1.5rem 1.75rem;
       box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
     }
     .card-title {
       margin: 0 0 0.25rem;
@@ -164,6 +165,13 @@
     }
     .btn:hover { background: var(--accent-hover); }
     .btn:active { transform: scale(0.98); }
+    .btn-secondary {
+      background: var(--surface-elevated);
+      color: var(--text);
+      border: 1px solid var(--border);
+      margin-top: 0.5rem;
+    }
+    .btn-secondary:hover { background: var(--border); }
     .error-msg {
       margin-top: 1rem;
       padding: 0.75rem 1rem;
@@ -190,24 +198,74 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: var(--text-muted);
-      margin-bottom: 0.25rem;
-    }
-    .result-box .shape {
-      font-size: 0.9rem;
-      color: var(--text-muted);
       margin-bottom: 0.5rem;
     }
-    .result-box .value {
-      font-size: 1.5rem;
+    .result-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      margin-top: 1rem;
+    }
+    .result-item {
+      padding: 0.75rem;
+      background: rgba(63, 185, 80, 0.05);
+      border-radius: var(--radius-sm);
+    }
+    .result-item .label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    .result-item .value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+    .result-main {
+      font-size: 1.8rem;
       font-weight: 700;
       color: var(--accent);
       letter-spacing: -0.02em;
+      margin: 0.5rem 0;
     }
-    .result-box .value-sub {
+    .result-sub {
       font-size: 0.9rem;
       color: var(--text-muted);
       margin-top: 0.25rem;
     }
+    .shape-diagram {
+      width: 100%;
+      max-width: 200px;
+      height: 150px;
+      margin: 1rem auto;
+      background: var(--surface-elevated);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+    .shape-diagram svg {
+      width: 80%;
+      height: 80%;
+    }
+    .history {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .history-item {
+      padding: 0.75rem;
+      background: var(--surface-elevated);
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .history-item .shape-name { color: var(--accent); font-weight: 600; }
+    .history-item .result { color: var(--text-muted); }
     .footer {
       text-align: center;
       padding: 2rem 1rem;
@@ -219,133 +277,196 @@
     }
     .footer a:hover { text-decoration: underline; }
     .footer .muted { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem; }
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab {
+      padding: 0.5rem 1rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+    }
+    .tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
   </style>
 </head>
 <body>
   <header class="header">
     <h1>Surface Measurement Tool</h1>
-    <p>Surface area calculator for industrial shapes — cylinder, rectangular, frustum, bucket, scoop. No install, runs in your browser.</p>
+    <p>Manual calculator for surface area and volume — cylinder, rectangular, frustum, bucket, scoop. No install, runs in your browser.</p>
   </header>
   <main class="main">
     <div class="card">
-      <h2 class="card-title">Manual surface area calculator</h2>
-      <p class="card-desc">Select a shape, enter dimensions in mm, cm, or m, and get total surface area in cm² and m².</p>
-      <form id="calc">
-        <div class="form-row">
-          <div class="field">
-            <label for="shape">Shape</label>
-            <select id="shape" name="shape" required>
-              <option value="cylinder">Cylinder</option>
-              <option value="rectangular">Rectangular</option>
-              <option value="frustum">Frustum</option>
-              <option value="bucket">Bucket</option>
-              <option value="scoop">Scoop</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="unit">Unit</label>
-            <select id="unit" name="unit">
-              <option value="mm">mm</option>
-              <option value="cm">cm</option>
-              <option value="m">m</option>
-            </select>
-          </div>
-          <div class="field full checkbox-wrap">
-            <input type="checkbox" id="include_top_bottom" name="include_top_bottom">
-            <label for="include_top_bottom">Include top & bottom</label>
-          </div>
-        </div>
+      <h2 class="card-title">Manual Calculator</h2>
+      <p class="card-desc">Select a shape, enter dimensions, and get detailed surface area and volume calculations.</p>
+      
+      <div class="tabs">
+        <button class="tab active" data-tab="calc">Calculator</button>
+        <button class="tab" data-tab="history">History</button>
+      </div>
 
-        <div class="section" data-shape="cylinder">
-          <div class="section-label">Cylinder — diameter & height</div>
-          <div class="inputs">
+      <div id="calc-tab" class="tab-content active">
+        <form id="calc">
+          <div class="form-row">
             <div class="field">
-              <label for="cylinder_diameter">Diameter</label>
-              <input type="number" step="any" id="cylinder_diameter" name="cylinder_diameter" placeholder="e.g. 100">
+              <label for="shape">Shape</label>
+              <select id="shape" name="shape" required>
+                <option value="cylinder">Cylinder</option>
+                <option value="rectangular">Rectangular</option>
+                <option value="frustum">Frustum</option>
+                <option value="bucket">Bucket</option>
+                <option value="scoop">Scoop</option>
+                <option value="cone">Cone</option>
+                <option value="sphere">Sphere</option>
+              </select>
             </div>
             <div class="field">
-              <label for="cylinder_height">Height</label>
-              <input type="number" step="any" id="cylinder_height" name="cylinder_height" placeholder="e.g. 200">
+              <label for="unit">Unit</label>
+              <select id="unit" name="unit">
+                <option value="mm">mm</option>
+                <option value="cm">cm</option>
+                <option value="m">m</option>
+              </select>
             </div>
-          </div>
-        </div>
-        <div class="section" data-shape="rectangular">
-          <div class="section-label">Rectangular — length, width, height</div>
-          <div class="inputs">
-            <div class="field">
-              <label for="rect_length">Length</label>
-              <input type="number" step="any" id="rect_length" name="rect_length" placeholder="Length">
-            </div>
-            <div class="field">
-              <label for="rect_width">Width</label>
-              <input type="number" step="any" id="rect_width" name="rect_width" placeholder="Width">
-            </div>
-            <div class="field">
-              <label for="rect_height">Height</label>
-              <input type="number" step="any" id="rect_height" name="rect_height" placeholder="Height">
-            </div>
-          </div>
-        </div>
-        <div class="section" data-shape="frustum">
-          <div class="section-label">Frustum — top Ø, bottom Ø, height</div>
-          <div class="inputs">
-            <div class="field">
-              <label for="frustum_top_diameter">Top diameter</label>
-              <input type="number" step="any" id="frustum_top_diameter" name="frustum_top_diameter" placeholder="Top Ø">
-            </div>
-            <div class="field">
-              <label for="frustum_bottom_diameter">Bottom diameter</label>
-              <input type="number" step="any" id="frustum_bottom_diameter" name="frustum_bottom_diameter" placeholder="Bottom Ø">
-            </div>
-            <div class="field">
-              <label for="frustum_height">Height</label>
-              <input type="number" step="any" id="frustum_height" name="frustum_height" placeholder="Height">
+            <div class="field full checkbox-wrap">
+              <input type="checkbox" id="include_top_bottom" name="include_top_bottom">
+              <label for="include_top_bottom">Include top & bottom</label>
             </div>
           </div>
-        </div>
-        <div class="section" data-shape="bucket">
-          <div class="section-label">Bucket — top Ø, bottom Ø, height</div>
-          <div class="inputs">
-            <div class="field">
-              <label for="bucket_top_diameter">Top diameter</label>
-              <input type="number" step="any" id="bucket_top_diameter" name="bucket_top_diameter" placeholder="Top Ø">
-            </div>
-            <div class="field">
-              <label for="bucket_bottom_diameter">Bottom diameter</label>
-              <input type="number" step="any" id="bucket_bottom_diameter" name="bucket_bottom_diameter" placeholder="Bottom Ø">
-            </div>
-            <div class="field">
-              <label for="bucket_height">Height</label>
-              <input type="number" step="any" id="bucket_height" name="bucket_height" placeholder="Height">
-            </div>
-          </div>
-        </div>
-        <div class="section" data-shape="scoop">
-          <div class="section-label">Scoop — top Ø, bottom Ø, height</div>
-          <div class="inputs">
-            <div class="field">
-              <label for="scoop_top_diameter">Top diameter</label>
-              <input type="number" step="any" id="scoop_top_diameter" name="scoop_top_diameter" placeholder="Top Ø">
-            </div>
-            <div class="field">
-              <label for="scoop_bottom_diameter">Bottom diameter</label>
-              <input type="number" step="any" id="scoop_bottom_diameter" name="scoop_bottom_diameter" placeholder="Bottom Ø">
-            </div>
-            <div class="field">
-              <label for="scoop_height">Height</label>
-              <input type="number" step="any" id="scoop_height" name="scoop_height" placeholder="Height">
-            </div>
-          </div>
-        </div>
 
-        <button type="submit" class="btn">Calculate surface area</button>
-      </form>
-      <div id="error" class="error-msg" role="alert"></div>
-      <div id="result" class="result-box">
-        <div class="label">Result</div>
-        <div class="shape" id="result-shape"></div>
-        <div class="value" id="result-value"></div>
-        <div class="value-sub" id="result-value-sub"></div>
+          <div class="section" data-shape="cylinder">
+            <div class="section-label">Cylinder — diameter & height</div>
+            <div class="inputs">
+              <div class="field">
+                <label for="cylinder_diameter">Diameter</label>
+                <input type="number" step="any" id="cylinder_diameter" name="cylinder_diameter" placeholder="e.g. 100">
+              </div>
+              <div class="field">
+                <label for="cylinder_height">Height</label>
+                <input type="number" step="any" id="cylinder_height" name="cylinder_height" placeholder="e.g. 200">
+              </div>
+            </div>
+          </div>
+          <div class="section" data-shape="rectangular">
+            <div class="section-label">Rectangular — length, width, height</div>
+            <div class="inputs">
+              <div class="field">
+                <label for="rect_length">Length</label>
+                <input type="number" step="any" id="rect_length" name="rect_length" placeholder="Length">
+              </div>
+              <div class="field">
+                <label for="rect_width">Width</label>
+                <input type="number" step="any" id="rect_width" name="rect_width" placeholder="Width">
+              </div>
+              <div class="field">
+                <label for="rect_height">Height</label>
+                <input type="number" step="any" id="rect_height" name="rect_height" placeholder="Height">
+              </div>
+            </div>
+          </div>
+          <div class="section" data-shape="frustum">
+            <div class="section-label">Frustum — top Ø, bottom Ø, height</div>
+            <div class="inputs">
+              <div class="field">
+                <label for="frustum_top_diameter">Top diameter</label>
+                <input type="number" step="any" id="frustum_top_diameter" name="frustum_top_diameter" placeholder="Top Ø">
+              </div>
+              <div class="field">
+                <label for="frustum_bottom_diameter">Bottom diameter</label>
+                <input type="number" step="any" id="frustum_bottom_diameter" name="frustum_bottom_diameter" placeholder="Bottom Ø">
+              </div>
+              <div class="field">
+                <label for="frustum_height">Height</label>
+                <input type="number" step="any" id="frustum_height" name="frustum_height" placeholder="Height">
+              </div>
+            </div>
+          </div>
+          <div class="section" data-shape="bucket">
+            <div class="section-label">Bucket — top Ø, bottom Ø, height</div>
+            <div class="inputs">
+              <div class="field">
+                <label for="bucket_top_diameter">Top diameter</label>
+                <input type="number" step="any" id="bucket_top_diameter" name="bucket_top_diameter" placeholder="Top Ø">
+              </div>
+              <div class="field">
+                <label for="bucket_bottom_diameter">Bottom diameter</label>
+                <input type="number" step="any" id="bucket_bottom_diameter" name="bucket_bottom_diameter" placeholder="Bottom Ø">
+              </div>
+              <div class="field">
+                <label for="bucket_height">Height</label>
+                <input type="number" step="any" id="bucket_height" name="bucket_height" placeholder="Height">
+              </div>
+            </div>
+          </div>
+          <div class="section" data-shape="scoop">
+            <div class="section-label">Scoop — top Ø, bottom Ø, height</div>
+            <div class="inputs">
+              <div class="field">
+                <label for="scoop_top_diameter">Top diameter</label>
+                <input type="number" step="any" id="scoop_top_diameter" name="scoop_top_diameter" placeholder="Top Ø">
+              </div>
+              <div class="field">
+                <label for="scoop_bottom_diameter">Bottom diameter</label>
+                <input type="number" step="any" id="scoop_bottom_diameter" name="scoop_bottom_diameter" placeholder="Bottom Ø">
+              </div>
+              <div class="field">
+                <label for="scoop_height">Height</label>
+                <input type="number" step="any" id="scoop_height" name="scoop_height" placeholder="Height">
+              </div>
+            </div>
+          </div>
+          <div class="section" data-shape="cone">
+            <div class="section-label">Cone — base diameter & height</div>
+            <div class="inputs">
+              <div class="field">
+                <label for="cone_diameter">Base diameter</label>
+                <input type="number" step="any" id="cone_diameter" name="cone_diameter" placeholder="Base Ø">
+              </div>
+              <div class="field">
+                <label for="cone_height">Height</label>
+                <input type="number" step="any" id="cone_height" name="cone_height" placeholder="Height">
+              </div>
+            </div>
+          </div>
+          <div class="section" data-shape="sphere">
+            <div class="section-label">Sphere — diameter or radius</div>
+            <div class="inputs">
+              <div class="field">
+                <label for="sphere_diameter">Diameter</label>
+                <input type="number" step="any" id="sphere_diameter" name="sphere_diameter" placeholder="Diameter">
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn">Calculate</button>
+        </form>
+        <div id="error" class="error-msg" role="alert"></div>
+        <div id="result" class="result-box">
+          <div class="label">Results</div>
+          <div id="result-shape" style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;"></div>
+          <div id="shape-diagram" class="shape-diagram"></div>
+          <div class="result-main" id="result-main"></div>
+          <div class="result-sub" id="result-sub"></div>
+          <div class="result-grid" id="result-details"></div>
+          <button class="btn btn-secondary" onclick="copyResults()">Copy Results</button>
+        </div>
+      </div>
+
+      <div id="history-tab" class="tab-content">
+        <div class="history" id="history-list">
+          <div style="color: var(--text-muted); text-align: center; padding: 2rem;">No calculations yet</div>
+        </div>
       </div>
     </div>
     <footer class="footer">
@@ -356,40 +477,108 @@
 
   <script>
     const PI = Math.PI;
+    let history = JSON.parse(localStorage.getItem('calcHistory') || '[]');
+
     function toMm(v, unit) {
       if (unit === 'm') return v * 1000;
       if (unit === 'cm') return v * 10;
       return v;
     }
+
     function cylinder(diameterMm, heightMm, includeTopBottom) {
       const r = diameterMm / 2;
       const lateral = 2 * PI * r * heightMm;
       const topBottom = includeTopBottom ? 2 * PI * r * r : 0;
-      return { total: lateral + topBottom, shape: 'Cylinder' };
+      const volume = PI * r * r * heightMm;
+      return {
+        total: lateral + topBottom,
+        lateral: lateral,
+        topBottom: topBottom,
+        volume: volume,
+        shape: 'Cylinder',
+        dims: {d: diameterMm, h: heightMm, r: r}
+      };
     }
+
     function rectangular(lMm, wMm, hMm, includeTopBottom) {
       const lateral = 2 * (lMm * hMm + wMm * hMm);
       const topBottom = includeTopBottom ? 2 * (lMm * wMm) : 0;
-      return { total: lateral + topBottom, shape: 'Rectangular' };
+      const volume = lMm * wMm * hMm;
+      return {
+        total: lateral + topBottom,
+        lateral: lateral,
+        topBottom: topBottom,
+        volume: volume,
+        shape: 'Rectangular',
+        dims: {l: lMm, w: wMm, h: hMm}
+      };
     }
+
     function frustum(topD, bottomD, heightMm) {
       const tr = topD / 2, br = bottomD / 2;
       const slant = Math.sqrt(heightMm * heightMm + Math.pow(tr - br, 2));
       const lateral = PI * (tr + br) * slant;
       const topArea = PI * tr * tr, bottomArea = PI * br * br;
-      return { total: lateral + topArea + bottomArea, shape: 'Frustum' };
+      const volume = (PI * heightMm / 3) * (tr * tr + tr * br + br * br);
+      return {
+        total: lateral + topArea + bottomArea,
+        lateral: lateral,
+        topArea: topArea,
+        bottomArea: bottomArea,
+        volume: volume,
+        shape: 'Frustum',
+        dims: {topD: topD, bottomD: bottomD, h: heightMm}
+      };
     }
+
     function bucket(topD, bottomD, heightMm) {
       const tr = topD / 2, br = bottomD / 2;
       const slant = Math.sqrt(heightMm * heightMm + Math.pow(tr - br, 2));
       const lateral = PI * (tr + br) * slant;
       const bottomArea = PI * br * br;
-      return { total: lateral + bottomArea, shape: 'Bucket' };
+      const volume = (PI * heightMm / 3) * (tr * tr + tr * br + br * br);
+      return {
+        total: lateral + bottomArea,
+        lateral: lateral,
+        bottomArea: bottomArea,
+        volume: volume,
+        shape: 'Bucket',
+        dims: {topD: topD, bottomD: bottomD, h: heightMm}
+      };
     }
+
     function scoop(topD, bottomD, heightMm) {
       var o = bucket(topD, bottomD, heightMm);
       o.shape = 'Scoop';
       return o;
+    }
+
+    function cone(diameterMm, heightMm) {
+      const r = diameterMm / 2;
+      const slant = Math.sqrt(heightMm * heightMm + r * r);
+      const lateral = PI * r * slant;
+      const baseArea = PI * r * r;
+      const volume = (PI * r * r * heightMm) / 3;
+      return {
+        total: lateral + baseArea,
+        lateral: lateral,
+        baseArea: baseArea,
+        volume: volume,
+        shape: 'Cone',
+        dims: {d: diameterMm, h: heightMm, r: r}
+      };
+    }
+
+    function sphere(diameterMm) {
+      const r = diameterMm / 2;
+      const area = 4 * PI * r * r;
+      const volume = (4 * PI * r * r * r) / 3;
+      return {
+        total: area,
+        volume: volume,
+        shape: 'Sphere',
+        dims: {d: diameterMm, r: r}
+      };
     }
 
     function getNum(form, name) {
@@ -405,8 +594,153 @@
         el.classList.toggle('active', el.dataset.shape === shape);
       });
     }
+
+    function drawShape(shape, dims) {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', '0 0 200 150');
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('fill', 'none');
+      g.setAttribute('stroke', 'var(--accent)');
+      g.setAttribute('stroke-width', '2');
+      
+      if (shape === 'Cylinder') {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', '50');
+        rect.setAttribute('y', '30');
+        rect.setAttribute('width', '100');
+        rect.setAttribute('height', '90');
+        g.appendChild(rect);
+        const ellipse1 = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        ellipse1.setAttribute('cx', '100');
+        ellipse1.setAttribute('cy', '30');
+        ellipse1.setAttribute('rx', '50');
+        ellipse1.setAttribute('ry', '15');
+        g.appendChild(ellipse1);
+        const ellipse2 = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        ellipse2.setAttribute('cx', '100');
+        ellipse2.setAttribute('cy', '120');
+        ellipse2.setAttribute('rx', '50');
+        ellipse2.setAttribute('ry', '15');
+        g.appendChild(ellipse2);
+      } else if (shape === 'Rectangular') {
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', '50');
+        rect.setAttribute('y', '30');
+        rect.setAttribute('width', '100');
+        rect.setAttribute('height', '90');
+        g.appendChild(rect);
+      } else if (shape === 'Sphere') {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', '100');
+        circle.setAttribute('cy', '75');
+        circle.setAttribute('r', '50');
+        g.appendChild(circle);
+      } else {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M 50 30 L 150 30 L 130 120 L 70 120 Z');
+        g.appendChild(path);
+      }
+      
+      svg.appendChild(g);
+      return svg;
+    }
+
+    function formatNumber(num, decimals) {
+      return num.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    function displayResult(out, unit) {
+      const resultEl = document.getElementById('result');
+      const totalMm2 = out.total;
+      const totalCm2 = totalMm2 / 100;
+      const totalM2 = totalMm2 / 1e6;
+      const volumeMm3 = out.volume || 0;
+      const volumeCm3 = volumeMm3 / 1000;
+      const volumeL = volumeCm3 / 1000;
+
+      document.getElementById('result-shape').textContent = out.shape;
+      document.getElementById('result-main').textContent = formatNumber(totalCm2, 2) + ' cm²';
+      document.getElementById('result-sub').textContent = formatNumber(totalM2, 6) + ' m²';
+
+      const details = document.getElementById('result-details');
+      details.innerHTML = '';
+      
+      const items = [
+        {label: 'Surface Area (cm²)', value: formatNumber(totalCm2, 2)},
+        {label: 'Surface Area (m²)', value: formatNumber(totalM2, 6)},
+        {label: 'Volume (cm³)', value: formatNumber(volumeCm3, 2)},
+        {label: 'Volume (L)', value: formatNumber(volumeL, 3)}
+      ];
+      
+      if (out.lateral !== undefined) {
+        items.push({label: 'Lateral Area (cm²)', value: formatNumber(out.lateral / 100, 2)});
+      }
+      if (out.topBottom !== undefined && out.topBottom > 0) {
+        items.push({label: 'Top/Bottom (cm²)', value: formatNumber(out.topBottom / 100, 2)});
+      }
+
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'result-item';
+        div.innerHTML = `<div class="label">${item.label}</div><div class="value">${item.value}</div>`;
+        details.appendChild(div);
+      });
+
+      const diagram = document.getElementById('shape-diagram');
+      diagram.innerHTML = '';
+      diagram.appendChild(drawShape(out.shape, out.dims));
+
+      resultEl.classList.add('show');
+
+      // Add to history
+      history.unshift({
+        shape: out.shape,
+        area: totalCm2,
+        volume: volumeCm3,
+        time: new Date().toLocaleTimeString()
+      });
+      if (history.length > 10) history.pop();
+      localStorage.setItem('calcHistory', JSON.stringify(history));
+      updateHistory();
+    }
+
+    function updateHistory() {
+      const list = document.getElementById('history-list');
+      if (history.length === 0) {
+        list.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 2rem;">No calculations yet</div>';
+        return;
+      }
+      list.innerHTML = history.map((h, i) => `
+        <div class="history-item">
+          <span><span class="shape-name">${h.shape}</span> — ${h.time}</span>
+          <span class="result">${formatNumber(h.area, 2)} cm²</span>
+        </div>
+      `).join('');
+    }
+
+    function copyResults() {
+      const text = `Shape: ${document.getElementById('result-shape').textContent}\n` +
+        `Surface Area: ${document.getElementById('result-main').textContent}\n` +
+        `Volume: ${document.getElementById('result-details').querySelectorAll('.result-item')[2]?.textContent || 'N/A'}`;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = orig, 2000);
+      });
+    }
+
     document.getElementById('shape').addEventListener('change', toggleShape);
     toggleShape();
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById(this.dataset.tab + '-tab').classList.add('active');
+      });
+    });
 
     document.getElementById('calc').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -441,16 +775,20 @@
         var t = getNum(form, 'scoop_top_diameter'), b = getNum(form, 'scoop_bottom_diameter'), h = getNum(form, 'scoop_height');
         if (t == null || b == null || h == null) { errorEl.textContent = 'Please enter top diameter, bottom diameter, and height.'; errorEl.classList.add('show'); return; }
         out = scoop(toMm(t, unit), toMm(b, unit), toMm(h, unit));
+      } else if (shape === 'cone') {
+        var d = getNum(form, 'cone_diameter'), h = getNum(form, 'cone_height');
+        if (d == null || h == null) { errorEl.textContent = 'Please enter base diameter and height.'; errorEl.classList.add('show'); return; }
+        out = cone(toMm(d, unit), toMm(h, unit));
+      } else if (shape === 'sphere') {
+        var d = getNum(form, 'sphere_diameter');
+        if (d == null) { errorEl.textContent = 'Please enter diameter.'; errorEl.classList.add('show'); return; }
+        out = sphere(toMm(d, unit));
       }
 
-      var totalMm2 = out.total;
-      var totalCm2 = totalMm2 / 100;
-      var totalM2 = totalMm2 / 1e6;
-      document.getElementById('result-shape').textContent = out.shape;
-      document.getElementById('result-value').textContent = totalCm2.toFixed(2) + ' cm²';
-      document.getElementById('result-value-sub').textContent = totalM2.toFixed(6) + ' m²';
-      resultEl.classList.add('show');
+      displayResult(out, unit);
     });
+
+    updateHistory();
   </script>
 </body>
 </html>
