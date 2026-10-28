@@ -1,0 +1,20 @@
+================================================================================
+                    ADD YOUR INDUSTRIAL TOOL IMAGES HERE
+================================================================================
+
+Copy your industrial tool images into this 'input_images' folder.
+
+The images you need to add:
+  1. Blue plastic scoop (19cm top, 14cm bottom, 11cm height)
+  2. Blue plastic bucket (25cm top, 17.8cm bottom, 25cm height)
+  3. White spatula (22.5cm length, 9cm wide)
+  4. Polished metal object with measurements
+  5. Rectangular stainless steel container (330mm x 270mm x 150mm)
+  6. Textured surface (305mm x 250mm)
+  7. Metallic bucket (57cm height, 58.8cm diameter)
+  8. Stainless steel equipment (4 views)
+  9. Hopper technical drawing
+
+After adding images, run: python build_tool.py
+
+================================================================================

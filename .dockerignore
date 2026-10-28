@@ -1,0 +1,14 @@
+.venv
+venv
+__pycache__
+*.pyc
+.git
+.gitignore
+*.md
+input_images/*
+output_images/*
+processed_images/*
+results/*
+Dataset/*
+.env
+*.bat
